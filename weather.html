@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="weather.css">
+    <script src="https://kit.fontawesome.com/d2c2d9ad81.js" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Festive&family=Indie+Flower&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Akaya+Telivigala&family=Festive&family=Indie+Flower&display=swap"
+        rel="stylesheet">
+
+    <style>
+        h1 {
+            text-align: center;
+            border: 3px solid grey;
+            border-radius: 20px;
+            box-shadow: 0 0 30px blue;
+            font-size: 50px;
+            display: inline-block;
+            background: silver;
+
+        }
+
+        body {
+            text-align: center;
+            margin: 0;
+            align-items: center;
+            display: flex;
+
+            height: 100vh;
+            background-repeat: no-repeat;
+            background-size: cover;
+            justify-content: center;
+            width: 100vw;
+        }
+
+        #tnum {
+            margin: 30px;
+            font-size: 60px;
+            font-family: 'Festive', cursive;
+            font-family: 'Indie Flower', cursive;
+
+        }
+
+        .card {
+            border: 3px solid rgb(188, 173, 202);
+
+            width: 100%;
+            max-width: 300px;
+            display: inline-block;
+            margin: auto;
+            background: #000000d0;
+            border-radius: 30px;
+            box-shadow: 0 0 30px rgb(188, 173, 202);
+            overflow: hidden;
+            padding: 30px;
+
+
+
+        }
+        .temp {
+            font-size: 50px;
+            color: white;
+            font-weight: 900;
+            font-family: 'Akaya Telivigala', cursive;
+        }
+        .info {
+            font-family: 'Akaya Telivigala', cursive;
+            color: white;
+        }
+        .desc {
+            font-size: 30px;
+
+        }
+        .name{
+            font-size: 30px;
+        }
+
+        .inputvalue {
+            margin-top: 20px;
+            text-decoration: none;
+            height: 30px;
+            margin-right: 10px;
+            width: 200px;
+            border: none;
+            border-radius: 20px;
+            background: #7c7c7c2b;
+            color: white;
+            font-family: 'Festive', cursive;
+            font-family: 'Indie Flower', cursive;
+            font-size: 30px;
+            text-align: center;
+
+        }
+
+        i {
+            font-size: 30px;
+            color: white;
+        }
+
+        .button {
+            border-radius: 50%;
+            padding: 10px;
+            background: #7c7c7c2b;
+            color: white;
+            border: 3px solid white;
+            font-family: 'Akaya Telivigala', cursive;
+            font-size: 20px;
+            cursor: pointer;
+
+
+
+        }
+
+        .inputvalue:hover {
+            background-color: rgb(78, 76, 76);
+        }
+
+        .button:hover {
+            font-size: 21px;
+            background: grey;
+        }
+
+        .inputvalue input {
+            margin-top: 50px;
+            border: 3px solid rgb(188, 173, 202);
+            background: white;
+        }
+
+
+
+
+
+
+        .fa-solid fa-clouds {
+            margin-left: 0;
+        }
+
+        .info {
+            margin: 30px;
+        }
+
+        .wind {
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: 5px;
+
+        }
+
+        .temp {
+            margin: 20px;
+            font-size: 80px;
+        }
+
+        .desc {
+            margin: 20px;
+        }
+
+        .humidity {
+            margin: 20px;
+            font-size: 25px;
+        }
+    </style>
+
+</head>
+
+<body
+    background="https://uploads.prod01.london.platform-os.com/instances/831/assets/images/What%20Makes%20a%20Building%20a%20Skyscraper%20by%20Fred%20Mills%20via%20The%20B1M.jpg?updated=1605539718">
+    <!-- <h1>Weather Card</h1> -->
+
+    <div class="card">
+
+
+
+        <div class="search">
+            <input type="text" class="inputvalue" placeholder="Enter the city">
+            <!-- <i class="fa-solid fa-magnifying-glass-location"></i> -->
+            <input type="submit" value="Go" class="button">
+        </div>
+
+
+
+        <div class="info">
+            <div class="name"><i class="fa-solid fa-street-view"></i></div>
+            <div class="temp">
+                <span id="tnum">00</span>
+            </div>
+            <div class="desc"><i class="fa-solid fa-cloud"></i></div>
+            <div class="wind"><i class="fa-solid fa-wind"></i></div>
+            <div class="humidity"></div>
+        </div>
+    </div>
+
+    <script>
+        // API for get requests
+        var inputvalue = document.querySelector('.inputvalue');
+        var temp = document.querySelector('.temp');
+        var description = document.querySelector('.desc');
+        var button = document.querySelector('.button');
+        var wind = document.querySelector('.wind');
+        var place = document.querySelector('.name');
+        var humidity = document.querySelector('.humidity');
+
+        button.addEventListener('click', function () {
+            let fetchRes = fetch(
+                "https://api.openweathermap.org/data/2.5/weather?q=" + inputvalue.value + "&appid=cf7e3ec47f858381bba83c5c3c16b774");
+
+            fetchRes.then(res =>
+                res.json()).then(data => {
+                    console.log(data);
+                    temp.innerHTML = (data['main']['temp'] - 273.15).toFixed(2) + " °C";
+                    description.innerHTML = data['weather']['0']['description'] +"  "+ '<i class="fa-solid fa-cloud"></i>';
+                    wind.innerHTML = '<i class="fa-solid fa-wind"></i>' + data['wind']['speed'] + "km/h"
+                    place.innerHTML = '<i class="fa-solid fa-street-view"></i>'+"   "+ data['name'];
+                    humidity.innerHTML = 'Humidity : ' + data['main']['humidity'] + "%";
+                })
+
+
+        })
+
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
